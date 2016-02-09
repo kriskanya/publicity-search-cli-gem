@@ -2,9 +2,14 @@ class PublicitySearch::Article
   attr_accessor :title, :author, :date_published, :url, :excerpt, :full_text, :comments
 
   @@articles = {}
-  PAGES = {"film": "http://deadline.com/v/film/", "tv": "http://deadline.com/v/tv/", 
-           "awards-line": "http://deadline.com/v/awards/", "box-office": "http://deadline.com/v/box-office/",
-           "business": "http://deadline.com/v/business/", "international": "http://deadline.com/v/international/"}
+  PAGES = { 
+            "film": "http://deadline.com/v/film/",
+            "tv": "http://deadline.com/v/tv/",
+            "awards-line": "http://deadline.com/v/awards/",
+            "box-office": "http://deadline.com/v/box-office/",
+            "business": "http://deadline.com/v/business/",
+            "international": "http://deadline.com/v/international/"
+          }
 
   def self.scrape_articles
     # scrape deadline and then return article info
@@ -45,9 +50,12 @@ class PublicitySearch::Article
   def self.start_scraper(max_articles, selected_category)
     @@articles[:deadline] ||= []
 
-    if selected_category == "film" || selected_category == "tv" || 
-      selected_category == "box-office" || selected_category == "business" ||
+    if selected_category == "film" || 
+      selected_category == "tv" || 
+      selected_category == "box-office" || 
+      selected_category == "business" ||
       selected_category == "international"
+
       self.scrape_deadline_film_tv(PAGES[selected_category.to_sym], max_articles)
     elsif selected_category == "awards-line"
       self.scrape_deadline_awardsline(PAGES[selected_category.to_sym], max_articles)
@@ -63,10 +71,10 @@ class PublicitySearch::Article
 
       article.url = post.search('.excerpt-link-wrapper').first.attributes['href'].value
       # call other method in case an article is actually on AwardsLine
-      # if Nokogiri::HTML(open(article.url)).search('.site-title').text.match(/awardsline/i)
-      #   self.scrape_deadline_awardsline(page_url, max_articles)
-      #   break
-      # end
+      if Nokogiri::HTML(open(article.url)).search('.site-title').text.match(/awardsline/i)
+        self.scrape_deadline_awardsline(page_url, max_articles)
+        break
+      end
 
       article.title = post.search('.post-title').text
       article.author = post.search('.author').map { |author| author.text }
