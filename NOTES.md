@@ -6,7 +6,7 @@ user inputs a string for what they want to search
 user inputs a date range, e.g., 12/13/15-1/15/16
 user selects a site they want to search (starting with deadline)
 
-"Hugh Jackman" was mentioned 5 time(s) from 12/13-15-1/15/16 on deadline.
+"Hugh Jackman" was mentioned 5 time(s) on deadline.
 
 1. Hugh Jackman gets married
 2. Hugh Jackman likes to work out.

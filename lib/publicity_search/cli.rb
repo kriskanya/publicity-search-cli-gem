@@ -74,16 +74,13 @@ class PublicitySearch::CLI
   def display(input)
     a = PublicitySearch::Article.all[@site.to_sym][input.to_i-1]
 
-    puts <<-STR
-    #{input.to_i}. #{a.title}
-      #{a.author}
-      #{a.date_published}
-
-      #{a.full_text}
-
-      #{a.url}
-      
-    STR
+    puts "#{input.to_i}. #{a.title}"
+    a.author.each {|a| puts a}
+    puts "#{a.date_published}"
+    puts
+    puts "#{a.full_text}"
+    puts
+    puts "#{a.url}"
   end
 
   def goodbye
